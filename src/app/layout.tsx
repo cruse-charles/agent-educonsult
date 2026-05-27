@@ -1,6 +1,7 @@
+import React from 'react';
 import type { Metadata } from 'next';
+import '@/styles/globals.css';
 import { Providers } from './providers';
-import '@/globals.css';
 
 export const metadata: Metadata = {
   title: 'EduConsult - Education Consulting Platform',
@@ -13,11 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>
-          {children}
-        </Providers>
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-slate-950 text-slate-50">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
