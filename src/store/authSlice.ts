@@ -1,45 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, User } from '@/types';
+import { User } from '@/types';
+
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+}
 
 const initialState: AuthState = {
   user: null,
-  isLoading: false,
-  isAuthenticated: false,
+  loading: true,
   error: null,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
-    setUser: (state, action: PayloadAction<User | null>) => {
+    setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      state.isAuthenticated = !!action.payload;
-      state.error = null;
+      state.isAuthenticated = true;
+      state.loading = false;
     },
-    setError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    },
-    clearError: (state) => {
-      state.error = null;
-    },
-    logout: (state) => {
+    clearUser: (state) => {
       state.user = null;
       state.isAuthenticated = false;
-      state.error = null;
-      state.isLoading = false;
     },
-    updateUser: (state, action: PayloadAction<Partial<User>>) => {
-      if (state.user) {
-        state.user = { ...state.user, ...action.payload };
-      }
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
     },
   },
 });
 
-export const { setLoading, setUser, setError, clearError, logout, updateUser } = authSlice.actions;
+export const { setUser, clearUser, setLoading, setError } = authSlice.actions;
 export default authSlice.reducer;
